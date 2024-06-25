@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosInstance = axios.create({
+const api = axios.create({
   baseURL: 'http://localhost:5001',
   headers: {
     'Content-Type': 'application/json',
@@ -9,11 +9,21 @@ const axiosInstance = axios.create({
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axiosInstance.post('/auth/register', userData);
+    const response = await api.post('/auth/register', userData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Server error');
   }
 };
 
-export default axiosInstance;
+export const loginUser = async (userData) => {
+  try {
+    const response = await api.post('/auth/login', userData);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Server error');
+  }
+};
+
+
+export default api;

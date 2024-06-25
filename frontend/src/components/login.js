@@ -15,8 +15,8 @@ import {
   ThemeProvider
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { green } from "@mui/material/colors"; // Import green color
-import { registerUser } from "../api/axios"; // Ensure the axiosConfig is in the correct path
+import { green } from "@mui/material/colors";
+import { loginUser } from "../api/axios";
 
 const theme = createTheme();
 
@@ -38,15 +38,14 @@ const theme = createTheme();
 //   );
 // }
 
-export default function SignUp() {
+export default function SignIn() {
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
   });
 
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("error"); // default to error
+  const [messageType, setMessageType] = useState("error");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,8 +58,8 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await registerUser(formData);
-      setMessage("User registered successfully");
+      await loginUser(formData);
+      setMessage("Login successful");
       setMessageType("success");
     } catch (error) {
       setMessage(
@@ -87,7 +86,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Sign in
           </Typography>
           <Box
             component="form"
@@ -96,19 +95,6 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="username"
-                  name="username"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  autoFocus
-                  value={formData.username}
-                  onChange={handleChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -129,7 +115,7 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
+                  autoComplete="current-password"
                   value={formData.password}
                   onChange={handleChange}
                 />
@@ -137,33 +123,34 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox value="remember" color="primary" />
                   }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  label="Remember me"
                 />
               </Grid>
             </Grid>
+            {message && (
+              <Typography
+                color={messageType === "error" ? "error" : green[500]}
+                variant="body2"
+                align="center"
+                sx={{ mb: 2 }}
+              >
+                {message}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Sign In
             </Button>
-            {message && (
-              <Typography
-                color={messageType === "error" ? "error" : green[500]}
-                variant="body2"
-                align="center"
-              >
-                {message}
-              </Typography>
-            )}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                  Don't have an account? Sign up
                 </Link>
               </Grid>
             </Grid>
